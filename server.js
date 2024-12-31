@@ -3,21 +3,23 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const mysql = require("mysql");
+
+// Initialize Express app
 const app = express();
 
-// Middleware with increased payload limit
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
+// Middleware for JSON and URL-encoded data with increased payload limit
+app.use(bodyParser.json({ limit: "10mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 
 // MySQL database connection setup
 const connection = mysql.createConnection({
-  host: 'sql12.freemysqlhosting.net', // Replace with your database host
-  user: 'sql12754840', // Replace with your database username
-  password: 'v3CStLahMf', // Replace with your database password
-  database: 'sql12754840', // Replace with your database name
+  host: "sql12.freemysqlhosting.net", // Replace with your database host
+  user: "sql12754840", // Replace with your database username
+  password: "v3CStLahMf", // Replace with your database password
+  database: "sql12754840", // Replace with your database name
 });
 
-// Connect to the database
+// Connect to the MySQL database
 connection.connect((err) => {
   if (err) {
     console.error("Error connecting to the database:", err);
@@ -26,7 +28,7 @@ connection.connect((err) => {
   console.log("Connected to the MySQL database.");
 });
 
-// Serve static files
+// Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, "public")));
 
 // Handle GET request to serve the main page
@@ -95,7 +97,7 @@ app.post("/submit-survey", (req, res) => {
 });
 
 // Start the server
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // Use environment variable for flexibility
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
